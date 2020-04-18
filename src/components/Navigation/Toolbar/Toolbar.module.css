@@ -1,0 +1,34 @@
+.Toolbar {
+  height: 56px;
+  width: 100%;
+  position: fixed; /* always shows on the top */
+  top: 0; /* always shows on the top */
+  left: 0; /* always shows on the top */
+  background-color: #703b09;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  /* needs to be smaller than backdrop’s z-index 
+     for backdrop to be able to sit on top of toolbar */
+  z-index: 90;
+}
+
+.Toolbar nav {
+  height: 100%;
+}
+
+/* 
+This will not interfere the class defined in Logo.module.css 
+as the auto-generated class name by React will be different.
+*/
+.Logo {
+  height: 80%;
+}
+
+@media (max-width: 499px) {
+  .DesktopOnly {
+    display: none;
+  }
+}

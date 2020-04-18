@@ -1,0 +1,51 @@
+/* mobile first */
+.NavigationItem {
+  margin: 10px 0;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+}
+
+.NavigationItem a {
+  color: #8f5c2c;
+  text-decoration: none; /* no under-line  */
+  width: 100%;
+  box-sizing: border-box; /* make sure height include the padding and border */
+  display: block;
+}
+
+.NavigationItem a:hover,
+.NavigationItem a:active,
+.NavigationItem a.active {
+  /* can be accessed in the code through classes.active  */
+  color: #40a4c8;
+}
+
+/* adjustment for desktop  */
+@media (min-width: 500px) {
+  .NavigationItem {
+    margin: 0;
+    /* center the link vertically */
+    display: flex;
+    /* center the link vertically - end  */
+    height: 100%;
+    width: auto;
+    align-items: center;
+  }
+
+  .NavigationItem a {
+    color: white; /* so it can stand out of the brown colour */
+    height: 100%;
+    padding: 16px 10px;
+    border-bottom: 4px solid transparent; /* when item is not highlighted the border bottom is not visible  */
+  }
+
+  .NavigationItem a:hover,
+  .NavigationItem a:active,
+  .NavigationItem a.active {
+    /* can be accessed in the code through classes.active  */
+    background-color: #8f5c2c;
+    border-bottom: 4px solid #40a4c8;
+    color: white;
+  }
+}
