@@ -10,7 +10,13 @@ class Modal extends Component {
   //   summary is not even visible there is not point
   //   to re-render it due to any state changes
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.show !== this.props.show;
+    return (
+      nextProps.show !== this.props.show ||
+      // the children property can be either the order summary
+      // or the spinner but the show property remain the same.
+      // you still want to re-render in this case
+      nextProps.children !== this.props.children
+    );
   }
 
   render() {
