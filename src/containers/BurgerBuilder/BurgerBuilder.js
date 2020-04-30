@@ -100,37 +100,21 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      let ingredient = encodeURIComponent(i);
+      let quantity = encodeURIComponent(this.state.ingredients[i]);
+      queryParams.push(`${ingredient}=${quantity}`);
+    }
+    queryParams.push(`price=${this.state.totalPrice}`);
+    const queryString = queryParams.join("&");
+    this.props.history.push({
+      pathname: "/checkout",
+      // This is what you try to compose
+      // ?bacon=0&cheese=0&meat=0&salad=4
+      search: `?${queryString}`,
+    });
     // alert("You continue!");
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Steven",
-        address: {
-          street: "NA Street",
-          zipCode: "V5H 5K9",
-          country: "Canada",
-        },
-        email: "a@bc.com",
-      },
-      deliveryMethod: "fastest",
-    };
-
-    axios
-      //  - You need to append “.json” to your collection (orders);
-      //    this is specific to Firebase.
-      //  - the collection will be created if it has not existed yet.
-      .post("/orders.json/", order)
-      .then((response) => {
-        console.log(response);
-        // Close off spinner and modal
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({ loading: false, purchasing: false });
-      });
   };
 
   render() {
