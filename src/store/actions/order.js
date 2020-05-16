@@ -24,14 +24,15 @@ export const purchaseBurgerStart = () => {
 };
 
 // async
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
   return (dispatch) => {
     dispatch(purchaseBurgerStart());
+    const url = `/orders.json?auth=${token}`;
     axios
       //  - You need to append “.json” to your collection (orders);
       //    this is specific to Firebase.
       //  - the collection will be created if it has not existed yet.
-      .post("/orders.json/", orderData)
+      .post(url, orderData)
       .then((response) => {
         dispatch(purchaseBurgerSuccess(response.data.name, orderData));
       })
@@ -67,11 +68,12 @@ export const fetchOrdersStart = () => {
   };
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = (token, userId) => {
   return (dispatch) => {
     dispatch(fetchOrdersStart());
+    const url = `/orders.json?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
     axios
-      .get("/orders.json")
+      .get(url)
       .then((res) => {
         // console.log(res.data);
         const fetchedOrders = [];
