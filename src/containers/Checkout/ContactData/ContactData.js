@@ -7,6 +7,7 @@ import axios from "../../../axios-orders";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../../store/actions/index";
+import { updateObject, checkValidity } from "../../../shared/utility";
 class ContactData extends Component {
   state = {
     orderForm: {
@@ -132,36 +133,38 @@ class ContactData extends Component {
     //   });
   };
 
-  checkValidity(value, rules) {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.trim().length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.trim().length <= rules.maxLength && isValid;
-    }
-    return isValid;
-  }
+  // checkValidity(value, rules) {
+  //   let isValid = true;
+  //   if (rules.required) {
+  //     isValid = value.trim() !== "" && isValid;
+  //   }
+  //   if (rules.minLength) {
+  //     isValid = value.trim().length >= rules.minLength && isValid;
+  //   }
+  //   if (rules.maxLength) {
+  //     isValid = value.trim().length <= rules.maxLength && isValid;
+  //   }
+  //   return isValid;
+  // }
 
   inputChangedHandler = (event, inputIdentifier) => {
     // the code looks clumsy as we
     // need to update the state in a immutable way
-    const updatedOrderForm = {
-      ...this.state.orderForm,
-    };
-    const updatedElem = { ...updatedOrderForm[inputIdentifier] };
-    updatedElem.value = event.target.value;
-    // check the validity whenever values changed
-    updatedElem.valid = this.checkValidity(
-      updatedElem.value,
-      updatedElem.validation
-    );
-    updatedElem.touched = true;
+    const updatedElem = updateObject(this.state.orderForm[inputIdentifier], {
+      value: event.target.value,
+      // check the validity whenever values changed
+      valid: checkValidity(
+        event.target.value,
+        this.state.orderForm[inputIdentifier].validation
+      ),
+      touched: true,
+    });
+
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updatedElem,
+    });
+
     // console.log(`${inputIdentifier} is valid: ${updatedElem.valid}`);
-    updatedOrderForm[inputIdentifier] = updatedElem;
     let formIsValid = true;
     for (let inputId in updatedOrderForm) {
       formIsValid = updatedOrderForm[inputId].valid && formIsValid;
@@ -177,11 +180,14 @@ class ContactData extends Component {
         config: this.state.orderForm[key],
       });
     }
+    // console.log(formElementsArray);
+
     let form = (
       <form onSubmit={this.orderHandler}>
         {formElementsArray.map((e) => (
           <Input
             key={e.id}
+            name={e.id}
             elementType={e.config.elementType}
             elementConfig={e.config.elementConfig}
             value={e.config.value}

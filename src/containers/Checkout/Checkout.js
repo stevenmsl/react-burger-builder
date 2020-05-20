@@ -8,10 +8,10 @@ import ContactData from "./ContactData/ContactData";
 class Checkout extends Component {
   constructor(props) {
     super(props);
-    console.log(
-      "Checkout constructor sees this.props.purchased:",
-      this.props.purchased
-    );
+    // console.log(
+    //   "Checkout constructor sees this.props.purchased:",
+    //   this.props.purchased
+    // );
     // set the purchased to false, too late for
     // the render method to see the change
     // through property. Move it up to the burger
@@ -56,10 +56,10 @@ class Checkout extends Component {
     let summary = <Redirect to="/" />;
     // show checkout summary only if there are ingredients
     if (this.props.ings) {
-      console.log(
-        "Checkout render see this.props.purchased:",
-        this.props.purchased
-      );
+      // console.log(
+      //   "Checkout render see this.props.purchased:",
+      //   this.props.purchased
+      // );
       const purchasedRedirect = this.props.purchased ? (
         <Redirect to="/" />
       ) : null;

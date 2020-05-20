@@ -6,6 +6,7 @@ import Button from "../../components/UI/Button/Button";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import * as actions from "../../store/actions/index";
 import classes from "./Auth.module.css";
+import { updateObject, checkValidity } from "../../shared/utility";
 
 class Auth extends Component {
   state = {
@@ -53,54 +54,52 @@ class Auth extends Component {
   componentDidMount() {
     // Reset the redirect path to root if you are not in
     // the middle of building a burger
-    console.log("Auth componentDidMount", this.props.authRedirectPath);
+    //console.log("Auth componentDidMount", this.props.authRedirectPath);
     if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
       this.props.onSetAuthRedirectPath();
-      console.log("Auth componentDidMount reset path");
+      //console.log("Auth componentDidMount reset path");
     }
   }
+  // moved to shared folder
+  // checkValidity(value, rules) {
+  //   let isValid = true;
+  //   if (rules.required) {
+  //     isValid = value.trim() !== "" && isValid;
+  //   }
+  //   if (rules.minLength) {
+  //     isValid = value.trim().length >= rules.minLength && isValid;
+  //   }
+  //   if (rules.maxLength) {
+  //     isValid = value.trim().length <= rules.maxLength && isValid;
+  //   }
 
-  checkValidity(value, rules) {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.trim().length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.trim().length <= rules.maxLength && isValid;
-    }
+  //   if (rules.isEmail) {
+  //     const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+  //     isValid = pattern.test(value) && isValid;
+  //   }
 
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
+  //   if (rules.isNumeric) {
+  //     const pattern = /^\d+$/;
+  //     isValid = pattern.test(value) && isValid;
+  //   }
 
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
+  //   return isValid;
+  // }
 
   inputChangedHandler = (event, controlName) => {
-    const updatedControls = {
-      ...this.state.controls,
+    const updatedControls = updateObject(this.state.controls, {
       // controlName is a variable;
       // you need to put square brackets around it
       // to retrieve the value
-      [controlName]: {
-        ...this.state.controls[controlName],
+      [controlName]: updateObject(this.state.controls[controlName], {
         value: event.target.value,
-        valid: this.checkValidity(
+        valid: checkValidity(
           event.target.value,
           this.state.controls[controlName].validation
         ),
         touched: true,
-      },
-    };
+      }),
+    });
     this.setState({ controls: updatedControls });
   };
 
@@ -148,7 +147,7 @@ class Auth extends Component {
     if (this.props.isAuthenticated) {
       // Redirect to “/checkout” if you were
       // building a burger before authenticated
-      console.log("redirect to", this.props.authRedirectPath);
+      //console.log("redirect to", this.props.authRedirectPath);
       authRedirect = <Redirect to={this.props.authRedirectPath} />;
     }
 

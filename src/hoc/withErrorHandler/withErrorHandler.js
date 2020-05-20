@@ -26,7 +26,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
         (res) => res,
         (error) => {
           this.setState({ error });
-          console.log("response interceptor", error);
+          // console.log("response interceptor", error);
           // need to throw error or “then” of the get method
           // will still be called even when there is an error
           // for example:

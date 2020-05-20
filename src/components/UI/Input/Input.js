@@ -5,8 +5,12 @@ const input = (props) => {
   const inputClasses = [classes.InputElement];
 
   if (props.invalid && props.shouldValidate && props.touched) {
+    // console.log(`show invalid message: ${props.name}`);
     inputClasses.push(classes.Invalid);
   }
+
+  //console.log(props.invalid, props.shouldValidate, props.touched);
+  //console.log(props.name, inputClasses);
 
   switch (props.elementType) {
     case "input":

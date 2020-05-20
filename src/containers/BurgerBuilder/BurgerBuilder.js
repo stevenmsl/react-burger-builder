@@ -11,7 +11,18 @@ import axios from "../../axios-orders";
 
 import * as actions from "../../store/actions/index";
 
-class BurgerBuilder extends Component {
+/*
+  We are testing the component itself not Redux: 
+  export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+  )(withErrorHandler(BurgerBuilder, axios));
+
+  export the component to make testing possible 
+
+*/
+
+export class BurgerBuilder extends Component {
   state = {
     //ingredients: null, // moved to Redux
     //totalPrice: 4, // moved to Redux

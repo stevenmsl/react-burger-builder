@@ -13,7 +13,9 @@ const sideDrawer = (props) => {
   return (
     <Aux>
       <Backdrop show={props.open} clicked={props.closed} />
-      <div className={attachedClasses.join(" ")}>
+      {/* set onClick={props.closed} will close the backdrop once 
+      a navigation item is clicked */}
+      <div className={attachedClasses.join(" ")} onClick={props.closed}>
         <div
           // - use this technique to set different height for the Logo.
           // - even though the class name “Logo” is the same both in
