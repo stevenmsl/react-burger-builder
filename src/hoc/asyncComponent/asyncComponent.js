@@ -16,7 +16,7 @@ const asyncComponent = (importComponent) => {
 
     componentDidMount() {
       importComponent().then((cmp) => {
-        console.log(cmp); // this is a module
+        // console.log(cmp); // this is a module
         this.setState({ component: cmp.default });
       });
     }
