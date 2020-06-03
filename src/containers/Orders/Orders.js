@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Order from "../../components/Order/Order";
 import axios from "../../axios-orders";
@@ -6,49 +6,24 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
 
-class Orders extends Component {
-  // moved to redux store
-  // state = {
-  //   orders: [],
-  //   loading: true,
-  // };
-  componentDidMount() {
-    // dispatch Redux action instead
-    this.props.onFetchOrders(this.props.token, this.props.userId);
-    // axios
-    //   .get("/orders.json")
-    //   .then((res) => {
-    //     // console.log(res.data);
-    //     const fetchedOrders = [];
-    //     // the returned data is not an array but an object.
-    //     // It looks like this:
-    //     // {-M66z8UGVJFocIMOLJeb: {…}, -M66zCci9YEQoMmM_SMB: {…}}
-    //     for (let key in res.data) {
-    //       fetchedOrders.push({
-    //         ...res.data[key],
-    //         id: key,
-    //       });
-    //     }
-    //     this.setState({ loading: false, orders: fetchedOrders });
-    //   })
-    //   .catch((err) => {
-    //     this.setState({ loading: false });
-    //   });
+const Orders = (props) => {
+  const { onFetchOrders, token, userId } = props;
+  useEffect(() => {
+    onFetchOrders(token, userId);
+  }, [onFetchOrders, token, userId]);
+
+  let orders = <Spinner />;
+  if (!props.loading) {
+    orders = props.orders.map((order) => (
+      <Order
+        key={order.id}
+        ingredients={order.ingredients}
+        price={order.price}
+      />
+    ));
   }
-  render() {
-    let orders = <Spinner />;
-    if (!this.props.loading) {
-      orders = this.props.orders.map((order) => (
-        <Order
-          key={order.id}
-          ingredients={order.ingredients}
-          price={order.price}
-        />
-      ));
-    }
-    return <div>{orders}</div>;
-  }
-}
+  return <div>{orders}</div>;
+};
 
 const mapStateToProps = (state) => {
   return {
