@@ -1,40 +1,39 @@
-import React, { Component } from "react";
+import React from "react";
 
 import classes from "./Modal.module.css";
 import Aux from "../../../hoc/Auxiliary/Auxiliary";
 import Backdrop from "../Backdrop/Backdrop";
 
-class Modal extends Component {
-  // - reduce the number of times of re-rendering
-  // - one of the scenarios is that if that the order
-  //   summary is not even visible there is not point
-  //   to re-render it due to any state changes
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      nextProps.show !== this.props.show ||
-      // the children property can be either the order summary
-      // or the spinner but the show property remain the same.
-      // you still want to re-render in this case
-      nextProps.children !== this.props.children
-    );
-  }
+const Modal = (props) => {
+  return (
+    <Aux>
+      <Backdrop show={props.show} clicked={props.modalClosed} />
+      <div
+        className={classes.Modal}
+        style={{
+          transform: props.show ? "translateY(0)" : "translateY(-100vh)",
+          opacity: props.show ? "1" : "0",
+        }}
+      >
+        {props.children}
+      </div>
+    </Aux>
+  );
+};
 
-  render() {
-    return (
-      <Aux>
-        <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
-        <div
-          className={classes.Modal}
-          style={{
-            transform: this.props.show ? "translateY(0)" : "translateY(-100vh)",
-            opacity: this.props.show ? "1" : "0",
-          }}
-        >
-          {this.props.children}
-        </div>
-      </Aux>
-    );
-  }
-}
+// shouldComponentUpdate(nextProps, nextState) {
+//   return (
+//     nextProps.show !== props.show ||
+//     nextProps.children !== props.children
+//   );
+// }
 
-export default Modal;
+// - use React.memo to replace shouldComponentUpdate
+// - if show and children properties remain the same
+//   then this component should not be re-rendered
+export default React.memo(
+  Modal,
+  (prevProps, nextProps) =>
+    nextProps.show === prevProps.show &&
+    nextProps.children === prevProps.children
+);
